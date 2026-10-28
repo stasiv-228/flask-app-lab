@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Резюме - Владислав Стасів{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-4 text-center">
+        <img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="Моє фото" class="img-fluid rounded-circle mb-3 shadow" style="max-width: 250px; height: 250px; object-fit: cover;">
+        
+        <h2>Владислав Стасів</h2>
+        <p class="text-muted">Software Engineering Student</p>
+    </div>
+    
+    <div class="col-md-8">
+        <section id="about" class="mb-4">
+            <h3 class="border-bottom pb-2">Про себе</h3>
+            <p>Студент, який активно вивчає інженерію програмного забезпечення, розробку веб-додатків, об'єктно-орієнтоване програмування та проєктування баз даних. Віддаю перевагу структурному підходу до написання коду та створенню модульних архітектур.</p>
+        </section>
+
+        <section id="education" class="mb-4">
+            <h3 class="border-bottom pb-2">Освіта</h3>
+            <ul class="list-unstyled">
+                <li class="mb-2">
+                    <strong>Прикарпатський національний університет імені Василя Стефаника</strong><br>
+                    <span class="text-muted">Спеціальність: Інженерія програмного забезпечення (група ІПЗ-33)</span>
+                </li>
+                <li>
+                    <strong>Ясенський ліцей</strong><br>
+                    <span class="text-muted">Повна загальна середня освіта</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="skills" class="mb-4">
+            <h3 class="border-bottom pb-2">Навички та Технології</h3>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <span class="badge bg-primary fs-6">Python / Flask</span>
+                <span class="badge bg-success fs-6">Node.js / Express</span>
+                <span class="badge bg-info text-dark fs-6">PHP</span>
+                <span class="badge bg-secondary fs-6">SQLite / MS SQL Server</span>
+                <span class="badge bg-dark fs-6">HTML5 / CSS3 / Bootstrap</span>
+                <span class="badge bg-danger fs-6">Git / GitHub</span>
+            </div>
+        </section>
+
+        <section id="experience" class="mb-4">
+            <h3 class="border-bottom pb-2">Досвід роботи та Проєкти</h3>
+            <ul class="list-group list-group-flush border rounded">
+                <li class="list-group-item">
+                    <strong>REST API для дитячого садка (Node.js)</strong> — робота в команді над розробкою ендпоінтів для калькуляції прибутку та генерації розкладу.
+                </li>
+                <li class="list-group-item">
+                    <strong>База даних системи управління готелем</strong> — каскадне проєктування та реалізація 9-табличної реляційної БД у SSMS.
+                </li>
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}
