@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Контакти - Владислав Стасів{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <h2 class="mb-4 text-center">Зв'яжіться зі мною</h2>
+        
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form action="#" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ваше ім'я</label>
+                        <input type="text" class="form-control" id="name" placeholder="Введіть ім'я" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Ваш Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Повідомлення</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Напишіть ваше повідомлення тут..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Відправити повідомлення</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <p><strong>Email:</strong> v.stasiv@example.com</p>
+            <p><strong>Локація:</strong> Івано-Франківськ, Україна</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
