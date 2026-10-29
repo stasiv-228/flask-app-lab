@@ -93,3 +93,13 @@ def delete_all_cookies():
 
     flash("Всі кукі успішно видалено!", "info")
     return response
+
+
+@users_bp.route("/theme/<color>")
+def change_theme(color):
+    if "username" not in session:
+        return redirect(url_for("users.login"))
+
+    response = make_response(redirect(url_for("users.profile")))
+    response.set_cookie("theme", color, max_age=30 * 24 * 60 * 60)
+    return response
