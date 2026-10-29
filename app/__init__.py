@@ -1,6 +1,9 @@
 from flask import Flask
 
 app = Flask(__name__)
-# app.config.from_pyfile("../config.py") # Поки закоментуємо, якщо config.py немає
 
 from . import views
+
+# Реєстрація Blueprint users
+from .users import users_bp
+app.register_blueprint(users_bp)
