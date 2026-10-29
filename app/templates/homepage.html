@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <h1 class="mb-4">Вітаю на Головній сторінці!</h1>
+        <p class="lead">Це домашня сторінка мого веб-додатка, створена в рамках Лабораторної роботи №3 (Модульна структура проектів на Flask).</p>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('resume') }}" class="btn btn-outline-primary me-2">Моє Резюме</a>
+            <a href="{{ url_for('contacts') }}" class="btn btn-outline-secondary">Контакти</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
