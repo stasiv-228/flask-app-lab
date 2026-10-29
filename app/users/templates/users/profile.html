@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Мій Профіль{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <h2>Вітаю, <span class="text-primary">{{ username }}</span>!</h2>
+        <p class="lead mt-3">Це ваша захищена сторінка профілю.</p>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти з системи</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
