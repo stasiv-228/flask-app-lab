@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Greeting Page{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <nav class="nav flex-column nav-pills mt-3">
+            <a class="nav-link" href="{{ url_for('users.greetings', name='John', age=30) }}">Greet John</a>
+            <a class="nav-link" href="{{ url_for('users.admin') }}">Admin</a>
+        </nav>
+    </div>
+
+    <div class="col-md-9 mt-3">
+        <div class="card p-4 shadow-sm">
+            <h2 class="display-4">Hello :)</h2>
+            <hr>
+            <h4>User: <span class="text-primary">{{ name }}</span></h4>
+            {% if age %}
+                <p class="text-success fw-bold">Age: {{ age }}</p>
+            {% else %}
+                <p class="text-danger">Age: Not provided</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
