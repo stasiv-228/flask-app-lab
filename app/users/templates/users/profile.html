@@ -3,14 +3,81 @@
 {% block title %}Мій Профіль{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-6 text-center">
-        <h2>Вітаю, <span class="text-primary">{{ username }}</span>!</h2>
-        <p class="lead mt-3">Це ваша захищена сторінка профілю.</p>
-        
-        <div class="mt-4">
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <!-- Блок привітання -->
+        <div class="text-center mb-4">
+            <h2>Вітаю, <span class="text-primary">{{ username }}</span>!</h2>
+            <p class="lead">Це ваша захищена сторінка профілю.</p>
             <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти з системи</a>
         </div>
+
+        <hr>
+
+        <!-- Завдання 2: Управління Cookie -->
+        <h3 class="mt-4 mb-3">Управління Cookie</h3>
+
+        <!-- Форма додавання -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('users.add_cookie') }}">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="cookie_key" placeholder="Ключ (напр. theme)" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="cookie_value" placeholder="Значення (напр. dark)" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" name="cookie_exp" placeholder="Термін (у днях)" required min="1">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-success w-100">Додати</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Таблиця збережених Cookie -->
+        <h4>Збережені Cookie:</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ключ</th>
+                        <th>Значення</th>
+                        <th style="width: 15%;">Дія</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Використовуємо namespace для зміни змінної всередині циклу -->
+                    {% set ns = namespace(has_cookies=false) %}
+                    {% for key, value in request.cookies.items() %}
+                        {% if key != 'session' %}
+                            {% set ns.has_cookies = true %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                                <td>
+                                    <a href="{{ url_for('users.delete_cookie', key=key) }}" class="btn btn-sm btn-outline-danger w-100">Видалити</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Якщо кукі немає -->
+                    {% if not ns.has_cookies %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">Немає збережених кукі</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('users.delete_all_cookies') }}" class="btn btn-warning mb-5">Видалити всі Cookie</a>
+
     </div>
 </div>
 {% endblock %}

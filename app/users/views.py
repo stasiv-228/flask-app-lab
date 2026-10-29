@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for, render_template, session, flash
+from flask import request, redirect, url_for, render_template, session, flash, make_response
 from . import users_bp
 
 @users_bp.route("/hi/<string:name>")  # /hi/ivan?age=45
@@ -49,3 +49,47 @@ def logout():
     session.pop("username", None)
     flash("Ви успішно вийшли з системи.", "info")
     return redirect(url_for("users.login"))
+
+
+@users_bp.route("/add_cookie", methods=["POST"])
+def add_cookie():
+    if "username" not in session:
+        return redirect(url_for("users.login"))
+
+    key = request.form.get("cookie_key")
+    value = request.form.get("cookie_value")
+    exp_days = request.form.get("cookie_exp", type=int, default=1)
+
+    response = make_response(redirect(url_for("users.profile")))
+
+    max_age = exp_days * 24 * 60 * 60
+    response.set_cookie(key, value, max_age=max_age)
+
+    flash(f"Кукі '{key}' успішно додано!", "success")
+    return response
+
+
+@users_bp.route("/delete_cookie/<key>")
+def delete_cookie(key):
+    if "username" not in session:
+        return redirect(url_for("users.login"))
+
+    response = make_response(redirect(url_for("users.profile")))
+    response.delete_cookie(key)
+    flash(f"Кукі '{key}' успішно видалено!", "info")
+    return response
+
+
+@users_bp.route("/delete_all_cookies")
+def delete_all_cookies():
+    if "username" not in session:
+        return redirect(url_for("users.login"))
+
+    response = make_response(redirect(url_for("users.profile")))
+
+    for key in request.cookies:
+        if key != "session":
+            response.delete_cookie(key)
+
+    flash("Всі кукі успішно видалено!", "info")
+    return response
