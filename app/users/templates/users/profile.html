@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Мій Профіль{% endblock %}
+
+{% block content %}
+{% set current_theme = request.cookies.get('theme', 'light') %}
+
+<div class="row justify-content-center mt-4 p-4 rounded shadow-sm {{ 'bg-dark text-white' if current_theme == 'dark' else 'bg-light text-dark' }}">
+    <div class="col-md-8">
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ url_for('users.change_theme', color='light') }}" class="btn btn-sm {{ 'btn-secondary' if current_theme == 'light' else 'btn-outline-secondary' }} me-2">Світла тема</a>
+            <a href="{{ url_for('users.change_theme', color='dark') }}" class="btn btn-sm {{ 'btn-light text-dark' if current_theme == 'dark' else 'btn-outline-dark' }}">Темна тема</a>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2>Вітаю, <span class="text-primary">{{ username }}</span>!</h2>
+            <p class="lead">Це ваша захищена сторінка профілю.</p>
+            <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти з системи</a>
+        </div>
+
+        <hr class="{{ 'border-white' if current_theme == 'dark' else '' }}">
+
+        <h3 class="mt-4 mb-3">Управління Cookie</h3>
+
+        <div class="card mb-4 shadow-sm {{ 'bg-secondary text-white border-0' if current_theme == 'dark' else '' }}">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('users.add_cookie') }}">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="cookie_key" placeholder="Ключ (напр. theme)" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="cookie_value" placeholder="Значення (напр. dark)" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" name="cookie_exp" placeholder="Термін (у днях)" required min="1">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-success w-100">Додати</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h4>Збережені Cookie:</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle {{ 'table-dark' if current_theme == 'dark' else 'table-striped' }}">
+                <thead>
+                    <tr>
+                        <th>Ключ</th>
+                        <th>Значення</th>
+                        <th style="width: 15%;">Дія</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set ns = namespace(has_cookies=false) %}
+                    {% for key, value in request.cookies.items() %}
+                        {% if key != 'session' %}
+                            {% set ns.has_cookies = true %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                                <td>
+                                    <a href="{{ url_for('users.delete_cookie', key=key) }}" class="btn btn-sm btn-outline-danger w-100">Видалити</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not ns.has_cookies %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted {{ 'text-light' if current_theme == 'dark' else '' }}">Немає збережених кукі</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('users.delete_all_cookies') }}" class="btn btn-warning mb-5">Видалити всі Cookie</a>
+
+    </div>
+</div>
+{% endblock %}

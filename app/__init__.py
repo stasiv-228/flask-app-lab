@@ -1,10 +1,10 @@
 from flask import Flask
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret-key-for-lab4'
 
 from . import views
 
-# Реєстрація Blueprint users
 from .users import users_bp
 app.register_blueprint(users_bp)
 
