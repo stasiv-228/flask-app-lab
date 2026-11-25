@@ -1,12 +1,13 @@
 from datetime import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField, SelectChoice
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, SelectMultipleField, SubmitField, SelectChoice
 from wtforms.fields import DateTimeLocalField
 from wtforms.validators import DataRequired, Length
 
 from app import db
 from app.users.models import User
+from .models import Tag
 
 CATEGORIES = [
     SelectChoice('news', 'Новини'),
@@ -42,6 +43,7 @@ class PostForm(FlaskForm):
         validators=[DataRequired(message="Оберіть категорію")]
     )
     author_id = SelectField('Автор', coerce=int, validators=[DataRequired(message="Оберіть автора")])
+    tags = SelectMultipleField('Теги', coerce=int)
     submit = SubmitField('Зберегти')
 
     def __init__(self, *args, **kwargs):
@@ -49,3 +51,6 @@ class PostForm(FlaskForm):
         # Список авторів із БД (синтаксис SQLAlchemy 2.0)
         users = db.session.scalars(db.select(User).order_by(User.id)).all()
         self.author_id.choices = [SelectChoice(user.id, user.username) for user in users]
+        # Список тегів із БД
+        tags = db.session.scalars(db.select(Tag).order_by(Tag.name)).all()
+        self.tags.choices = [SelectChoice(tag.id, tag.name) for tag in tags]

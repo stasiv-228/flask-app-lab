@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 
 from app import create_app, db
-from app.posts.models import Post
+from app.posts.models import Post, Tag
 from app.users.models import User
 
 
@@ -17,6 +17,7 @@ class PostTestCase(unittest.TestCase):
             db.session.add_all([
                 User(username="vlad", email="vlad@example.com", password="hash1"),
                 User(username="student", email="student@example.com", password="hash2"),
+                Tag(name="Python"), Tag(name="Flask"), Tag(name="ORM"),
             ])
             db.session.commit()
 
@@ -182,6 +183,55 @@ class PostTestCase(unittest.TestCase):
     def test_delete_post_not_found(self):
         response = self.client.post("/post/999/delete")
         self.assertEqual(response.status_code, 404)
+
+    # ---------- Tags (Many-to-Many) ----------
+    def test_create_post_form_has_tags(self):
+        response = self.client.get("/post/create")
+        self.assertIn(b'name="tags"', response.data)
+        self.assertIn(b'multiple', response.data)
+        self.assertIn(b'<option value="1">Python</option>', response.data)
+
+    def test_create_post_with_tags(self):
+        self.client.post("/post/create", data=self.form_data(tags=["1", "3"]), follow_redirects=True)
+        with self.app.app_context():
+            post = db.session.scalar(db.select(Post).filter_by(title="My first post"))
+            self.assertEqual(sorted(tag.name for tag in post.tags), ["ORM", "Python"])
+            python = db.session.get(Tag, 1)
+            self.assertIn(post, python.posts)
+
+    def test_create_post_without_tags(self):
+        self.client.post("/post/create", data=self.form_data(), follow_redirects=True)
+        with self.app.app_context():
+            post = db.session.scalar(db.select(Post).filter_by(title="My first post"))
+            self.assertEqual(post.tags, [])
+
+    def test_update_post_tags(self):
+        with self.app.app_context():
+            post = Post(title="Tagged", content="Text", category="tech", user_id=1)
+            post.tags.append(db.session.get(Tag, 1))
+            db.session.add(post)
+            db.session.commit()
+            post_id = post.id
+
+        response = self.client.get(f"/post/{post_id}/update")
+        self.assertIn(b'<option selected value="1">Python</option>', response.data)
+
+        self.client.post(f"/post/{post_id}/update", data=self.form_data(tags=["2", "3"]))
+        with self.app.app_context():
+            post = db.session.get(Post, post_id)
+            self.assertEqual(sorted(tag.name for tag in post.tags), ["Flask", "ORM"])
+
+    def test_detail_post_shows_tags(self):
+        with self.app.app_context():
+            post = Post(title="Tagged", content="Text", category="tech", user_id=1)
+            post.tags.extend([db.session.get(Tag, 1), db.session.get(Tag, 2)])
+            db.session.add(post)
+            db.session.commit()
+            post_id = post.id
+
+        response = self.client.get(f"/post/{post_id}")
+        self.assertIn(b'class="post-tag">#Flask', response.data)
+        self.assertIn(b'class="post-tag">#Python', response.data)
 
     # ---------- Errors ----------
     def test_404_page(self):
