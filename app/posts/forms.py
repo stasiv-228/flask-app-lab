@@ -5,6 +5,9 @@ from wtforms import StringField, TextAreaField, BooleanField, SelectField, Submi
 from wtforms.fields import DateTimeLocalField
 from wtforms.validators import DataRequired, Length
 
+from app import db
+from app.users.models import User
+
 CATEGORIES = [
     SelectChoice('news', 'Новини'),
     SelectChoice('publication', 'Публікація'),
@@ -38,4 +41,11 @@ class PostForm(FlaskForm):
         choices=CATEGORIES,
         validators=[DataRequired(message="Оберіть категорію")]
     )
+    author_id = SelectField('Автор', coerce=int, validators=[DataRequired(message="Оберіть автора")])
     submit = SubmitField('Зберегти')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Список авторів із БД (синтаксис SQLAlchemy 2.0)
+        users = db.session.scalars(db.select(User).order_by(User.id)).all()
+        self.author_id.choices = [SelectChoice(user.id, user.username) for user in users]

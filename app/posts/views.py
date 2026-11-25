@@ -33,6 +33,7 @@ def add_post():
             is_active=form.is_active.data,
             posted=form.publish_date.data,
             category=form.category.data,
+            user_id=form.author_id.data,
         )
         db.session.add(new_post)
         db.session.commit()
@@ -50,11 +51,17 @@ def update_post(id):
     post = db.get_or_404(Post, id)   # якщо об'єкт не знайдено — помилка 404
     form = PostForm(obj=post)        # заповнення форми даними поста
     if request.method == "GET":
-        form.publish_date.data = post.posted  # назви полів у формі та моделі різні
+        # назви полів у формі та моделі різні, тому заповнюємо їх вручну
+        form.publish_date.data = post.posted
+        form.author_id.data = post.user_id
 
     if form.validate_on_submit():
-        form.populate_obj(post)               # оновлення об'єкта post з форми
+        post.title = form.title.data
+        post.content = form.content.data
+        post.is_active = form.is_active.data
+        post.category = form.category.data
         post.posted = form.publish_date.data
+        post.user_id = form.author_id.data
         db.session.commit()
         flash(f"Пост «{post.title}» успішно оновлено!", "success")
         return redirect(url_for(".detail_post", id=post.id))
