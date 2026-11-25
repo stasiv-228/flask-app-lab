@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4d7b81f-39d8-4b49-901b-7affcd004b7e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/templates/users/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_products.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +15,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -45,7 +42,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "lab4"
+    "git-widget-placeholder": "lab5"
   }
 }]]></component>
   <component name="RecentsManager">

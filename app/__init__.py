@@ -2,6 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret-key-for-lab4'
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
 from . import views
 
