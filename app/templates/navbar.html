@@ -1,16 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/">Web Портфоліо</a>
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">Web Портфоліо</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Резюме</a>
+                    <a class="nav-link" href="{{ url_for('main.resume') }}">Резюме</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contacts">Контакти</a>
+                    <a class="nav-link" href="{{ url_for('main.contacts') }}">Контакти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('products.list_products') }}">Товари</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('posts.all_posts') }}">Пости</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.login') }}">Вхід</a>

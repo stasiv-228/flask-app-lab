@@ -1,0 +1,101 @@
+/* Стилі блюпринта posts */
+
+.myclass {
+    font-weight: 700;
+    color: #2c3e50;
+    border-left: 6px solid #bbff00;
+    padding-left: 12px;
+}
+
+.btn-add-post {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-add-post:hover,
+.btn-add-post:focus {
+    background-color: #1a252f;
+    border-color: #1a252f;
+    color: #bbff00;
+}
+
+/* Картки постів */
+.post-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+}
+
+.post-card-img {
+    height: 150px;
+    object-fit: cover;
+    background-color: #2c3e50;
+}
+
+.post-meta {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.post-excerpt {
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+/* Бейдж категорії */
+.post-category {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.post-category-news        { background-color: #e7f1ff; color: #0b5ed7; }
+.post-category-publication { background-color: #f3e8ff; color: #6f42c1; }
+.post-category-tech        { background-color: #eaffcc; color: #3d6b00; }
+.post-category-other       { background-color: #f1f3f5; color: #495057; }
+
+/* Сторінка поста та форми */
+.post-detail {
+    max-width: 760px;
+}
+
+.post-detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.post-content {
+    white-space: pre-line;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.post-form {
+    max-width: 620px;
+}
+
+.back-link {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

@@ -1,11 +1,11 @@
 import unittest
-from app import app
+from app import create_app
 
 class FlaskProductTestCase(unittest.TestCase):
     def setUp(self):
         """Налаштування клієнта тестування перед кожним тестом."""
-        app.config["TESTING"] = True
-        self.client = app.test_client()
+        self.app = create_app("testing")
+        self.client = self.app.test_client()
 
     def test_products_list_page(self):
         """Тест маршруту /products/ (список товарів)."""
