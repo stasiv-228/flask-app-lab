@@ -66,22 +66,12 @@ class PostTestCase(unittest.TestCase):
             self.assertEqual(post.category, "tech")
             self.assertTrue(post.is_active)
             self.assertEqual(post.posted, datetime(2026, 11, 20, 10, 30))
-            self.assertEqual(post.author, "Anonymous")
+            self.assertIsNone(post.user)
 
     def test_create_post_redirects_to_list(self):
         response = self.client.post("/post/create", data=self.form_data())
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.headers["Location"].endswith("/post/"))
-
-    def test_create_post_author_from_session(self):
-        with self.client.session_transaction() as sess:
-            sess["username"] = "Student"
-
-        self.client.post("/post/create", data=self.form_data(), follow_redirects=True)
-
-        with self.app.app_context():
-            post = db.session.scalar(db.select(Post).filter_by(title="My first post"))
-            self.assertEqual(post.author, "Student")
 
     def test_create_post_invalid_data(self):
         response = self.client.post("/post/create", data=self.form_data(title=""), follow_redirects=True)
@@ -110,12 +100,12 @@ class PostTestCase(unittest.TestCase):
         self.assertIn(b"A" * 100, response.data)
 
     def test_detail_post(self):
-        post_id = self.create_post(title="Detail title", content="Full content of the post", author="Student")
+        post_id = self.create_post(title="Detail title", content="Full content of the post")
         response = self.client.get(f"/post/{post_id}")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Detail title", response.data)
         self.assertIn(b"Full content of the post", response.data)
-        self.assertIn(b"Student", response.data)
+        self.assertIn(b"Anonymous", response.data)
 
     def test_detail_post_not_found(self):
         response = self.client.get("/post/999")
@@ -131,7 +121,7 @@ class PostTestCase(unittest.TestCase):
         self.assertIn(b'value="2026-03-15T09:45"', response.data)
 
     def test_update_post(self):
-        post_id = self.create_post(title="Old title", content="Old content", category="news", author="Student")
+        post_id = self.create_post(title="Old title", content="Old content", category="news")
 
         response = self.client.post(
             f"/post/{post_id}/update",
@@ -148,7 +138,6 @@ class PostTestCase(unittest.TestCase):
             self.assertEqual(post.content, "New content")
             self.assertEqual(post.category, "other")
             self.assertEqual(post.posted, datetime(2026, 10, 1, 12, 0))
-            self.assertEqual(post.author, "Student")
 
     def test_update_post_not_found(self):
         response = self.client.post("/post/999/update", data=self.form_data())

@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import String, Text, DateTime, Enum, Boolean, true
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, Text, DateTime, Enum, Boolean, ForeignKey, true
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app import db
 
@@ -25,7 +25,9 @@ class Post(db.Model):
         default='other'
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())
-    author: Mapped[str] = mapped_column(String(20), default='Anonymous', server_default='Anonymous')
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+
+    user: Mapped["User"] = relationship(back_populates="posts")
 
     def __repr__(self):
         return f"<Post(id={self.id}, title='{self.title}', category='{self.category}')>"

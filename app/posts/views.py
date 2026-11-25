@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 
 from app import db
@@ -33,7 +33,6 @@ def add_post():
             is_active=form.is_active.data,
             posted=form.publish_date.data,
             category=form.category.data,
-            author=session.get("username", "Anonymous"),  # автор — користувач із сесії
         )
         db.session.add(new_post)
         db.session.commit()

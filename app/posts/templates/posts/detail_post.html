@@ -20,7 +20,7 @@
             </div>
             <h1 class="post-detail-title">{{ post.title }}</h1>
             <p class="post-meta">
-                Автор: <strong>{{ post.author }}</strong> ·
+                Автор: <strong>{{ post.user.username if post.user else 'Anonymous' }}</strong> ·
                 Дата: {{ post.posted.strftime('%d.%m.%Y %H:%M') }}
             </p>
             <hr>
