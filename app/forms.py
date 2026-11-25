@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, TextAreaField, SubmitField
+from wtforms import SelectChoice, StringField, SelectField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, Regexp
 
 
@@ -28,10 +28,10 @@ class ContactForm(FlaskForm):
     subject = SelectField(
         'Subject',
         choices=[
-            ('general', 'Загальне питання'),
-            ('support', 'Технічна підтримка'),
-            ('cooperation', 'Пропозиція співпраці'),
-            ('feedback', 'Відгук')
+            SelectChoice('general', 'Загальне питання'),
+            SelectChoice('support', 'Технічна підтримка'),
+            SelectChoice('cooperation', 'Пропозиція співпраці'),
+            SelectChoice('feedback', 'Відгук')
         ],
         validators=[DataRequired(message="Оберіть тему звернення")]
     )

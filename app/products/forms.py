@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, DecimalField, SelectField, IntegerField, SubmitField
+from wtforms import SelectChoice, StringField, TextAreaField, DecimalField, SelectField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 
@@ -30,11 +30,11 @@ class ProductForm(FlaskForm):
     category = SelectField(
         'Категорія',
         choices=[
-            ('electronics', 'Електроніка'),
-            ('clothing', 'Одяг'),
-            ('books', 'Книги'),
-            ('home', 'Дім та сад'),
-            ('other', 'Інше')
+            SelectChoice('electronics', 'Електроніка'),
+            SelectChoice('clothing', 'Одяг'),
+            SelectChoice('books', 'Книги'),
+            SelectChoice('home', 'Дім та сад'),
+            SelectChoice('other', 'Інше')
         ],
         validators=[DataRequired(message="Оберіть категорію")]
     )

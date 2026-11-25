@@ -1,15 +1,15 @@
 from datetime import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField, SelectChoice
 from wtforms.fields import DateTimeLocalField
 from wtforms.validators import DataRequired, Length
 
 CATEGORIES = [
-    ('news', 'Новини'),
-    ('publication', 'Публікація'),
-    ('tech', 'Технології'),
-    ('other', 'Інше'),
+    SelectChoice('news', 'Новини'),
+    SelectChoice('publication', 'Публікація'),
+    SelectChoice('tech', 'Технології'),
+    SelectChoice('other', 'Інше'),
 ]
 
 
