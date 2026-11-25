@@ -40,6 +40,9 @@ def create_app(config_name=None):
     from .products import products_bp
     app.register_blueprint(products_bp)
 
+    from .posts import post_bp
+    app.register_blueprint(post_bp)
+
     # Обробник помилки 404
     @app.errorhandler(404)
     def page_not_found(error):
