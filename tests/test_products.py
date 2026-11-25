@@ -3,15 +3,14 @@ import os
 import tempfile
 import unittest
 from tinydb import TinyDB
-from app import app
+from app import create_app
 from app.products import views as product_views
 
 
 class ProductCRUDTestCase(unittest.TestCase):
     def setUp(self):
-        app.config['TESTING'] = True
-        app.config['WTF_CSRF_ENABLED'] = False
-        self.client = app.test_client()
+        self.app = create_app('testing')
+        self.client = self.app.test_client()
 
         self.temp_dir = tempfile.TemporaryDirectory()
         self.test_db = TinyDB(os.path.join(self.temp_dir.name, 'test_products.json'))
