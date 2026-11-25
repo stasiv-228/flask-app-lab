@@ -28,7 +28,7 @@ def create_app(config_name=None):
 
     # Ініціалізація розширень
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
 
     # Реєстрація блюпринтів
     from .views import main_bp
