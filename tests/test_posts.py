@@ -19,6 +19,7 @@ class PostTestCase(unittest.TestCase):
         with self.app.app_context():
             db.session.remove()
             db.drop_all()
+            db.engine.dispose()
 
     def create_post(self, **kwargs):
         """Допоміжний метод: додає пост у БД та повертає його id"""
@@ -90,17 +91,17 @@ class PostTestCase(unittest.TestCase):
 
     # ---------- Read ----------
     def test_list_posts_active_sorted_by_date_desc(self):
-        self.create_post(title="Older post", posted=datetime(2026, 1, 1))
-        self.create_post(title="Newer post", posted=datetime(2026, 6, 1))
-        self.create_post(title="Hidden post", is_active=False)
+        self.create_post(title="Older Post", posted=datetime(2026, 1, 1))
+        self.create_post(title="Newer Post", posted=datetime(2026, 6, 1))
+        self.create_post(title="Hidden Post", is_active=False)
 
         response = self.client.get("/post/")
         self.assertEqual(response.status_code, 200)
         html = response.get_data(as_text=True)
-        self.assertIn("Newer post", html)
-        self.assertIn("Older post", html)
-        self.assertNotIn("Hidden post", html)
-        self.assertLess(html.index("Newer post"), html.index("Older post"))
+        self.assertIn("Newer Post", html)
+        self.assertIn("Older Post", html)
+        self.assertNotIn("Hidden Post", html)
+        self.assertLess(html.index("Newer Post"), html.index("Older Post"))
 
     def test_list_posts_truncates_content(self):
         self.create_post(content="A" * 150)

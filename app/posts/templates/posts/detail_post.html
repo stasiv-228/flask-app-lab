@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="post-detail mx-auto">
+    <a href="{{ url_for('.all_posts') }}" class="back-link">&larr; До всіх постів</a>
+
+    <article class="card post-card mt-3">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="post-category post-category-{{ post.category }}">{{ post.category }}</span>
+                {% if not post.is_active %}
+                    <span class="badge bg-secondary">Неактивний</span>
+                {% endif %}
+            </div>
+            <h1 class="post-detail-title">{{ post.title }}</h1>
+            <p class="post-meta">
+                Автор: <strong>{{ post.author }}</strong> ·
+                Дата: {{ post.posted.strftime('%d.%m.%Y %H:%M') }}
+            </p>
+            <hr>
+            <div class="post-content">{{ post.content }}</div>
+        </div>
+        <div class="card-footer bg-transparent d-flex gap-2 p-3">
+            <a href="{{ url_for('.update_post', id=post.id) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ url_for('.delete_post', id=post.id) }}" class="btn btn-danger">Delete</a>
+        </div>
+    </article>
+</div>
+{% endblock %}

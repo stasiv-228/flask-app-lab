@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Пости{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="posts-header d-flex justify-content-between align-items-center mb-4">
+    <h1 class="myclass mb-0">Статті</h1>
+    <!-- Кнопка для додавання поста -->
+    <a href="{{ url_for('.add_post') }}" class="btn btn-add-post">+ Add Post</a>
+</div>
+
+{% if posts %}
+<!-- Відображення списку постів у вигляді карток -->
+<div class="row">
+    {% for post in posts %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card post-card h-100">
+            <img src="{{ url_for('.static', filename='img/default.jpg') }}" class="card-img-top post-card-img" alt="post">
+            <div class="card-body d-flex flex-column">
+                <span class="post-category post-category-{{ post.category }} mb-2">{{ post.category }}</span>
+                <h5 class="card-title">{{ post.title | title }}</h5>
+                <p class="post-meta mb-2">{{ post.posted.strftime('%d.%m.%Y %H:%M') }} · {{ post.author }}</p>
+                <p class="card-text post-excerpt">{{ post.content[:100] }}{% if post.content | length > 100 %}…{% endif %}</p>
+                <div class="mt-auto">
+                    <a href="{{ url_for('.detail_post', id=post.id) }}" class="btn btn-outline-dark btn-sm">Переглянути</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">Постів поки немає. Натисніть «Add Post», щоб створити перший.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалити пост{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="post-form mx-auto">
+    <div class="card post-card border-danger">
+        <div class="card-body p-4 text-center">
+            <h4 class="text-danger mb-3">Видалити пост?</h4>
+            <p class="mb-1">Ви дійсно хочете видалити пост</p>
+            <p class="fs-5 fw-semibold">«{{ post.title }}»</p>
+            <p class="text-muted small">Цю дію неможливо скасувати.</p>
+
+            <form method="POST" action="{{ url_for('.delete_post', id=post.id) }}" class="d-flex justify-content-center gap-2 mt-4">
+                {{ form.hidden_tag() }}
+                <a href="{{ url_for('.detail_post', id=post.id) }}" class="btn btn-secondary">Скасувати</a>
+                <button type="submit" class="btn btn-danger">Так, видалити</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
