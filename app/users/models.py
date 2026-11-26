@@ -1,10 +1,17 @@
+from flask_login import UserMixin
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app import db, bcrypt
+from app import db, bcrypt, login_manager
 
 
-class User(db.Model):
+@login_manager.user_loader
+def user_loader(user_id):
+    """Завантаження поточного користувача за id, збереженим у сесії"""
+    return db.session.get(User, int(user_id))
+
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)

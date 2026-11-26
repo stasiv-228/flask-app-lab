@@ -1,4 +1,5 @@
-from flask import request, redirect, url_for, render_template, session, flash, make_response
+from flask import request, redirect, url_for, render_template, flash, make_response
+from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from . import users_bp
 from .forms import RegistrationForm, LoginForm
@@ -19,6 +20,9 @@ def admin():
 
 @users_bp.route("/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("users.account"))
+
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -32,55 +36,53 @@ def register():
 
 @users_bp.route("/login", methods=["GET", "POST"])
 def login():
-    if "username" in session:
+    if current_user.is_authenticated:
         return redirect(url_for("users.account"))
 
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.scalar(db.select(User).filter_by(email=form.email.data))
         if user and user.check_password(form.password.data):
-            session["username"] = user.username
-            session["email"] = user.email
+            login_user(user, remember=form.remember.data)
             flash(f"Вітаю, {user.username}! Вхід успішний.", "success")
+            next_page = request.args.get("next")
+            if next_page and next_page.startswith("/") and not next_page.startswith("//"):
+                return redirect(next_page)
             return redirect(url_for("users.account"))
         flash("Невірний email або пароль. Спробуйте ще раз.", "danger")
     return render_template("users/login.html", form=form, title="Вхід")
 
 
 @users_bp.route("/account")
+@login_required
 def account():
-    if "username" not in session:
-        flash("Будь ласка, увійдіть у систему.", "warning")
-        return redirect(url_for("users.login"))
-    return render_template("users/account.html", username=session["username"], email=session.get("email"))
+    # current_user надає доступ до даних автентифікованого користувача
+    return render_template("users/account.html", user=current_user)
 
 
 @users_bp.route("/users")
+@login_required
 def users_list():
     users = db.session.scalars(db.select(User).order_by(User.id)).all()
     return render_template("users/users.html", users=users)
 
 
 @users_bp.route("/profile")
+@login_required
 def profile():
-    if "username" not in session:
-        flash("Будь ласка, увійдіть у систему для перегляду профілю.", "warning")
-        return redirect(url_for("users.login"))
+    return render_template("users/profile.html", username=current_user.username)
 
-    username = session["username"]
-    return render_template("users/profile.html", username=username)
 
 @users_bp.route("/logout")
 def logout():
-    session.pop("username", None)
-    session.pop("email", None)
+    logout_user()
     flash("Ви успішно вийшли з системи.", "info")
     return redirect(url_for("users.login"))
 
 
 @users_bp.route("/add_cookie", methods=["POST"])
 def add_cookie():
-    if "username" not in session:
+    if not current_user.is_authenticated:
         return redirect(url_for("users.login"))
 
     key = request.form.get("cookie_key")
@@ -98,7 +100,7 @@ def add_cookie():
 
 @users_bp.route("/delete_cookie/<key>")
 def delete_cookie(key):
-    if "username" not in session:
+    if not current_user.is_authenticated:
         return redirect(url_for("users.login"))
 
     response = make_response(redirect(url_for("users.profile")))
@@ -109,7 +111,7 @@ def delete_cookie(key):
 
 @users_bp.route("/delete_all_cookies")
 def delete_all_cookies():
-    if "username" not in session:
+    if not current_user.is_authenticated:
         return redirect(url_for("users.login"))
 
     response = make_response(redirect(url_for("users.profile")))
@@ -124,7 +126,7 @@ def delete_all_cookies():
 
 @users_bp.route("/theme/<color>")
 def change_theme(color):
-    if "username" not in session:
+    if not current_user.is_authenticated:
         return redirect(url_for("users.login"))
 
     response = make_response(redirect(url_for("users.profile")))
