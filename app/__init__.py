@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 
@@ -20,6 +21,7 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
+bcrypt = Bcrypt()
 
 
 def create_app(config_name=None):
@@ -36,6 +38,7 @@ def create_app(config_name=None):
     # Ініціалізація розширень
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
+    bcrypt.init_app(app)
 
     # Реєстрація блюпринтів
     from .views import main_bp
