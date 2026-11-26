@@ -29,3 +29,103 @@ section:hover {
     background-color: #2c3e50;
     border-color: #2c3e50;
 }
+/* ---------- Реєстрація та вхід ---------- */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.auth-title {
+    text-align: center;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.92rem;
+    margin-bottom: 22px;
+}
+
+.btn-auth {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.btn-auth:hover,
+.btn-auth:focus {
+    background-color: #1a252f;
+    border-color: #1a252f;
+    color: #bbff00;
+}
+
+.auth-switch {
+    text-align: center;
+    margin: 18px 0 0;
+    font-size: 0.92rem;
+    color: #6c757d;
+}
+
+.auth-switch a {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* ---------- Акаунт ---------- */
+.account-card {
+    max-width: 520px;
+    text-align: center;
+}
+
+.account-avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background-color: #2c3e50;
+    color: #bbff00;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- Список користувачів ---------- */
+.users-page {
+    max-width: 860px;
+}
+
+.users-title {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 18px;
+}
+
+.users-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.users-card thead th {
+    background-color: #2c3e50;
+    color: #bbff00;
+    font-weight: 600;
+    border: none;
+}

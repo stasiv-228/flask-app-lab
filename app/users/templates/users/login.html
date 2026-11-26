@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
+{% from 'macros/form_macros.html' import render_field %}
 
-{% block title %}Вхід в систему{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <h3 class="text-center mb-4">Вхід у Профіль</h3>
-        <form method="POST" action="{{ url_for('users.login') }}">
-            <div class="mb-3">
-                <label for="username" class="form-label">Ім'я користувача</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Увійти</button>
-        </form>
+<div class="auth-wrapper">
+    <div class="card auth-card">
+        <div class="card-body p-4">
+            <h3 class="auth-title">Вхід</h3>
+            <p class="auth-subtitle">Будь ласка, введіть ваш email та пароль</p>
+
+            <form method="POST" action="{{ url_for('users.login', next=request.args.get('next')) }}" novalidate>
+                {{ form.hidden_tag() }}
+                {{ render_field(form.email, placeholder="Email") }}
+                {{ render_field(form.password, placeholder="Password") }}
+                {{ render_field(form.remember) }}
+                {{ form.submit(class="btn btn-auth w-100") }}
+            </form>
+
+            <p class="auth-switch">Немає акаунта? <a href="{{ url_for('users.register') }}">Зареєструватися</a></p>
+        </div>
     </div>
 </div>
 {% endblock %}
