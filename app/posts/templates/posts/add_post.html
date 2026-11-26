@@ -22,6 +22,9 @@
                 {{ render_field(form.is_active) }}
                 {{ render_field(form.publish_date) }}
                 {{ render_field(form.category) }}
+                {{ render_field(form.author_id) }}
+                {{ render_field(form.tags, size=5) }}
+                <div class="form-text mb-3">Утримуйте Ctrl, щоб вибрати кілька тегів.</div>
 
                 {{ form.submit(class="btn btn-add-post") }}
             </form>

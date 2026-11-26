@@ -1,10 +1,17 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 
 from app import db
 from . import post_bp
 from .forms import PostForm
-from .models import Post
+from .models import Post, Tag
+
+
+def get_selected_tags(tag_ids):
+    """Повертає список об'єктів Tag за вибраними у формі id"""
+    if not tag_ids:
+        return []
+    return list(db.session.scalars(db.select(Tag).where(Tag.id.in_(tag_ids))))
 
 
 @post_bp.route("/")
@@ -33,8 +40,9 @@ def add_post():
             is_active=form.is_active.data,
             posted=form.publish_date.data,
             category=form.category.data,
-            author=session.get("username", "Anonymous"),  # автор — користувач із сесії
+            user_id=form.author_id.data,
         )
+        new_post.tags = get_selected_tags(form.tags.data)
         db.session.add(new_post)
         db.session.commit()
         flash(f"Пост «{new_post.title}» успішно додано!", "success")
@@ -51,11 +59,19 @@ def update_post(id):
     post = db.get_or_404(Post, id)   # якщо об'єкт не знайдено — помилка 404
     form = PostForm(obj=post)        # заповнення форми даними поста
     if request.method == "GET":
-        form.publish_date.data = post.posted  # назви полів у формі та моделі різні
+        # назви полів у формі та моделі різні, тому заповнюємо їх вручну
+        form.publish_date.data = post.posted
+        form.author_id.data = post.user_id
+        form.tags.data = [tag.id for tag in post.tags]
 
     if form.validate_on_submit():
-        form.populate_obj(post)               # оновлення об'єкта post з форми
+        post.title = form.title.data
+        post.content = form.content.data
+        post.is_active = form.is_active.data
+        post.category = form.category.data
         post.posted = form.publish_date.data
+        post.user_id = form.author_id.data
+        post.tags = get_selected_tags(form.tags.data)
         db.session.commit()
         flash(f"Пост «{post.title}» успішно оновлено!", "success")
         return redirect(url_for(".detail_post", id=post.id))

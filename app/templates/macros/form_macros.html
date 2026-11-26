@@ -7,7 +7,7 @@
       </div>
     {% else %}
       {{ field.label(class="form-label fw-semibold") }}
-      {% set css = 'form-select' if field.type == 'SelectField' else 'form-control' %}
+      {% set css = 'form-select' if field.type in ('SelectField', 'SelectMultipleField') else 'form-control' %}
       {% if field.errors %}
         {{ field(class=css ~ " is-invalid", **kwargs) | safe }}
         {% for error in field.errors %}
