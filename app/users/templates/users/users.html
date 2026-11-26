@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Користувачі{% endblock %}
+
+{% block content %}
+<div class="users-page mx-auto">
+    <h2 class="users-title">Users List ({{ users | length }})</h2>
+
+    {% if users %}
+    <div class="card users-card">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th style="width: 15%;">Постів</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.posts | length }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">Зареєстрованих користувачів поки немає.</div>
+    {% endif %}
+</div>
+{% endblock %}

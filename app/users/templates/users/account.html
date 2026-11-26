@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Акаунт{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="card auth-card account-card">
+        <div class="card-body p-4">
+            <div class="account-avatar">{{ username[0] | upper }}</div>
+            <h3 class="auth-title">Welcome, {{ username }}!</h3>
+            <p class="auth-subtitle mb-3">You have successfully logged in to your profile.</p>
+            <ul class="list-group list-group-flush text-start mb-4">
+                <li class="list-group-item"><strong>Username:</strong> {{ username }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ email }}</li>
+            </ul>
+            <div class="d-flex gap-2 justify-content-center">
+                <a href="{{ url_for('users.users_list') }}" class="btn btn-outline-dark">Усі користувачі</a>
+                <a href="{{ url_for('users.profile') }}" class="btn btn-outline-secondary">Кукі та тема</a>
+                <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
