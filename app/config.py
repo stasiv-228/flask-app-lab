@@ -12,6 +12,8 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret-key-for-lab6'
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5 MB
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Журналювання SQL-запитів: SQLALCHEMY_ECHO=1 у змінних середовища
+    SQLALCHEMY_ECHO = os.environ.get('SQLALCHEMY_ECHO') == '1'
 
 
 class DevelopmentConfig(Config):
